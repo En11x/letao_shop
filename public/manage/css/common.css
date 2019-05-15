@@ -1,0 +1,136 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+ul {
+  list-style: none;
+}
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
+.red{
+    color: #A94442;
+}
+/* 全局公共样式 */
+.mt_150 {
+  margin-top: 150px;
+}
+
+/* 左侧菜单 */
+.lt_aside {
+  width: 180px;
+  height: 100%;
+  background-color: #222d32;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  transition: all 1s;
+}
+
+.lt_aside .brand{
+    height: 50px;
+    line-height: 50px;
+    font-size: 24px;
+    background-color: #367FA9;
+    text-align: center;
+}
+.lt_aside .brand a{
+    color:white;
+}
+.lt_aside .user{
+    height:180px;
+    padding-top:30px;
+}
+.lt_aside .user img{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    margin:0 auto;
+}
+.lt_aside .user p{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+    color: white;
+}
+
+.lt_aside .nav a{
+    height:40px;
+    line-height:40px;
+    display: block;
+    color: white;
+    padding-left: 40px;
+    border-left: 3px solid transparent;
+}
+.lt_aside .nav a.current{
+    background-color:#1d1f21;
+    border-left: 3px solid #006699;
+}
+.lt_aside .nav i{
+    margin-right: 5px;
+}
+.lt_aside .nav .child a{
+    padding-left:60px;
+}
+.lt_aside.hidemenu {
+    left: -180px;
+  }
+/* 右边内容 */
+.lt_main{
+    height:100%;
+    width:100%;
+    padding-left: 180px;
+    padding-top: 50px;
+    transition: all 1s;
+}
+.lt_main.hidemenu{
+    padding-left:0;
+}
+
+.lt_topbar.hidemenu{
+    padding-left:0;
+}
+.lt_topbar{
+    position: fixed;
+    top:0;
+    left: 0;
+    height:50px;
+    width: 100%;
+    line-height: 50px;
+    background-color: #3c8dbc;
+    padding-left:180px;
+    transition: all 1s;
+    z-index: 666;
+}
+.lt_topbar a{
+    width:50px;
+    height:50px;
+    font-size: 16px;
+    color:white;
+    text-align: center;
+}
+
+.breadcrumb{
+    margin-top: 20px;
+}
+
+.echarts_1,
+.echarts_2 {
+  width: 48%;
+  height: 400px;
+}
+.table.table-bordered th,
+.table.table-bordered td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#paginator a{
+    cursor: pointer;
+}
