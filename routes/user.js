@@ -1,4 +1,5 @@
 const express = require('express')
+const crypto = require('crypto')
 const User = require('../models/user.js')
 const Page = require('../models/page.js')
 const router = express.Router()
@@ -33,6 +34,34 @@ router.post('/updateUser',function(req,res){
         if(err) return res.send({'error':403,"message":'数据库错误'})
         res.send({"success":true})
     })
+})
+
+//用户登录
+router.post('/login',function(req,res){
+    let md5 = crypto.createHash('md5')
+    let password = md5.update(req.body.password).digest('base64')
+    User.getUserByName(req.body.username,function(err,data){
+        console.log(data)
+        if(data.length === 0)return res.send({"error":403,"message":'用户名不存在!'})
+        if(data[0].password != password) return res.send({"error":403,"message":'密码错误!'})
+        req.session.user = data
+        console.log(req.session)
+        res.send({"success":true})
+    })
+})
+//查询用户信息
+router.get('/queryUserMessage',function(req,res){
+    let id = req.session.user[0].id
+    User.queryUserMessage(id,function(err,data){
+        if(err) return res.send({'error':403,"message":'数据库错误'})
+        res.send(data) 
+    })
+})
+
+//退出登录
+router.get('/logout',function(req,res){
+    req.session.user = null
+    res.send({ "success": true })
 })
 
 module.exports = router

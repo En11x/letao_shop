@@ -39,4 +39,21 @@ User.updateUser = function(user,callback){
     })
 }
 
+//查找user
+User.getUserByName = function(username,callback){
+    let selectSql = 'select * from user where username =? AND isDelete =1'
+    db.query(selectSql,[username],function(err,result){
+        if(err)return callback(err)
+        callback(err,result)
+    })
+}
+
+//查询信息
+User.queryUserMessage = function(id,callback){
+    let selectSql = 'select * from user where id = ?'
+    db.query(selectSql,[id],function(err,result){
+        if(err)return callback(err)
+        callback(err,result)
+    })
+}
 module.exports = User

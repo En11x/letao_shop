@@ -104,4 +104,26 @@ router.post("/addSecondCategoryPic", function(req, res) {
   });
 });
 
+router.get('/queryTopCategory',function(req,res){
+  Category.queryTopCategory(function(err,data){
+    if(err) res.send({"error":403,"message":'查询失败'})
+    let obj={
+      total:data.length,
+      rows:data
+    }
+    res.send(obj)
+  })
+})
+
+router.get('/querySecondCategory',function(req,res){
+  Category.querySecondCategory(req.query.id,function(err,data){
+    if(err) res.send({"error":403,"message":'查询失败'})
+    let obj={
+      total:data.length,
+      rows:data
+    }
+    res.send(obj)
+  })
+})
+
 module.exports = router;

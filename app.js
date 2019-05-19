@@ -11,6 +11,7 @@ const employee = require('./routes/employee')
 const user = require('./routes/user')
 const category = require('./routes/category')
 const product = require('./routes/product')
+const cart = require('./routes/cart')
 
 
 const app = express()
@@ -35,6 +36,19 @@ app.use(function(req,res,next){
   next()
 })
 
+app.use(function(req,res,next){
+  //获取访问路径
+  // console.log(req.originalUrl)
+  let url = req.originalUrl
+  
+  if (!req.session.user
+    && ((url.indexOf('/mobile') > -1 && url.indexOf('.html') > -1) || url == '/mobile/' )
+    && url.indexOf('/mobile/login.html') == -1 && url.indexOf('/mobile/index.html') == -1&& url.indexOf('/mobile/category.html') == -1) {
+    return res.redirect('/mobile/login.html');
+  }
+  next()
+})
+
 
 // view engine setup
 app.engine('html', require('express-art-template'))
@@ -52,6 +66,7 @@ app.use('/employee',employee)
 app.use('/user',user)
 app.use('/category',category)
 app.use('/product',product)
+app.use('/cart',cart)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

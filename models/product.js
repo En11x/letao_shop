@@ -74,4 +74,42 @@ Product.addProduct = function(product,callback){
   });
 }
 
+Product.queryProduct = function(product,page,callback){
+  let selectSql = 'select * from product where statu = 1'
+  let params = new Array()
+  if( product.proName ){
+    selectSql += ' AND proName LIKE ?'
+    params[0] = '%'+product.proName+'%'
+  }
+  if( product.brandId ){
+    selectSql += ' AND brandId = ?'
+    params[params.length] = product.brandId
+  }
+  if( product.price ){
+    //升序
+    if( product.price ==1 ) selectSql += ' ORDER BY price'
+    //降序
+    if( product.price == 2 ) selectSql += ' ORDER BY price DESC'
+  }else if( product.num ){
+    //升序
+    if( product.num ==1 ) selectSql += ' ORDER BY num'
+    //降序
+    if( product.num == 2 ) selectSql += ' ORDER BY num DESC'
+  }
+  selectSql += ' LIMIT ?,?'
+  params[params.length] = (page.page -1) *page.size
+  params[params.length] = page.size
+  db.query(selectSql,params,function(err,result){
+    if(err) return callback(err)
+    callback(err,result)
+  })
+}
+
+Product.queryProductDetail = function(productId,callback){
+  let selectSql = 'select * from product where id = ?'
+  db.query(selectSql,[productId],function(err,result){
+    if(err) return callback(err)
+    callback(err,result)
+  })
+}
 module.exports = Product

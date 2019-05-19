@@ -26,6 +26,18 @@ router.get("/queryProductDetailList", function(req, res) {
   });
 });
 
+router.get('/queryProductDetail',function(req,res){
+  Product.queryProductDetail(parseInt(req.query.id),function(err,data){
+    if (err) return res.send({ error: 403, message: "数据库异常！" })
+    ProPic.queryPic(req.query.id,function(err,picData){
+      if (err) return res.send({ error: 403, message: "数据库异常！" })
+      data[0].pic = new Array()
+      data[0].pic = picData
+      res.send(data[0])
+    })
+  })
+})
+
 router.post("/addProductPic", function(req, res) {
   //创建表单上传
   let form = new formidable.IncomingForm();
@@ -90,5 +102,44 @@ router.post("/addProduct", function(req, res) {
     res.send({ success: true });
   });
 });
+
+router.post('/queryProduct',function(req,res){
+  let product = new Product({
+    proName : req.body.proName ? req.body.proName:'',
+    brandId :  req.body.brandId ? req.body.brandId:'',
+    price : req.body.price ? req.body.price:'',
+    num : req.body.num ? req.body.num:''
+  })
+  let page = new Page({
+    page : req.body.page?parseInt(req.body.page):1,
+    size : req.body.size?parseInt(req.body.size):10
+  })
+  Product.queryProduct(product,page,function(err,data){
+    if (err) return res.send({ error: 403, message: "数据库异常！" });
+    if(data.length == 0) return res.send(data)
+    let idStr = ''
+    //拿到所有产品的ID
+    for(let i=0;i<data.length;i++){
+      if(i==0){
+        idStr += data[i].id
+      }else{
+        idStr += ','+data[i].id
+      }
+      data[i].pic = new Array()
+    }
+    //拿到产品对应的图片数据
+    ProPic.queryPic(idStr,function(err,picData){
+      if (err) return res.send({ error: 403, message: "数据库异常！" })
+      for(let i =0;i<data.length;i++){
+        for( let j=0; j<picData.length; j++ ){
+          if(picData[j].productId == data[i].id){
+            data[i].pic.push(picData[j])
+          }
+        }
+      }
+      res.send(data)
+    })
+  })
+})
 
 module.exports = router;

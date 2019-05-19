@@ -53,4 +53,22 @@ Category.addTopCategory = function(category,callback){
     })
 }
 
+// 查询一级分类
+Category.queryTopCategory = function(callback){
+    let selectSql = 'select * from category where isDelete =1 '
+    db.query(selectSql,function(err,result){
+        if(err)return callback(err)
+        callback(err,result)
+    })
+}
+
+// 查询二级分类
+Category.querySecondCategory = function(id,callback){
+    let selectSql = 'select * from brand where categoryId =? and isDelete =1'
+    db.query(selectSql,[id],function(err,result){
+        if(err)return callback(err)
+        callback(err,result)
+    })
+}
+
 module.exports = Category

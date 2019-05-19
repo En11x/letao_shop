@@ -15,4 +15,12 @@ ProPic.addPic = function(pic,callback){
     })
 }
 
+ProPic.queryPic = function(proId,callback){
+    let selectSql = 'select * from product_picture where productId in ('+proId+')'
+    db.query(selectSql,function(err,result){
+        if(err) return callback(err)
+        callback(err,result)
+    })
+}
+
 module.exports = ProPic
